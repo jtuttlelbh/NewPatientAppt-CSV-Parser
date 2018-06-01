@@ -1,4 +1,3 @@
-# C:\Users\jtuttle\Documents\GIM_New_Patient_Appts\ed_discharge1.csv
 import csv
 from simple_salesforce import Salesforce
 from datetime import datetime, timedelta
