@@ -25,6 +25,9 @@ def run_CSV(ed):
 
                 for row in ed_reader:
                     if not row[0] and not row[1]:
+                        print('%i records written to csv' % record_count + '\n'
+                              + '%i valid emails found' % valid_email_count + '\n'
+                              + 'appt_file and patient_file ready for upload.\n')
                         return
                     elif header_row:
                         headers = list(row)
@@ -82,8 +85,6 @@ def get_duration(start_time, end_time):
 def main():
     connect_to_sf()
     run_CSV(open(input('Enter full CSV Path:\n'), newline='\n'))
-    print('%i records written to csv' % record_count)
-    print('%i valid emails found' % valid_email_count)
 
 
 if __name__ == '__main__':
