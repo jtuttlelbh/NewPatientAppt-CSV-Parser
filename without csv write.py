@@ -1,7 +1,7 @@
-
 # TODO: duplicate patient checking
 
 import csv
+import json
 from simple_salesforce import Salesforce
 from datetime import datetime, timedelta
 from validate_email import validate_email
@@ -9,6 +9,7 @@ from fieldMap import fieldMap
 from secret import *
 
 record_count = 0
+unique_appointments = 0
 valid_email_count = 0
 
 
@@ -17,13 +18,14 @@ def run_CSV(ed):
     with ed as ed_file:
         global record_count
         global valid_email_count
+        global unique_appointments
         patient_appts = []
         header_row = True
         ed_reader = csv.reader(ed_file, delimiter=',', quotechar='"')
 
         for row in ed_reader:
             if not row[0] and not row[1]:
-                print('\n%i records written to csv' % record_count
+                print('\n%i records found' % record_count
                       + '\n%i valid emails found' % valid_email_count)
                 break
             elif header_row:
@@ -48,25 +50,36 @@ def run_CSV(ed):
 
                 entry = {
                     'ApptID': row[i_appt_id],
-                    'Data': {
-                        'Patient': {
-                            'FirstName': row[i_fname],
-                            'MiddleName': row[i_mname],
-                            'LastName': row[i_lname],
-                            'Email': row[i_email],
-                            'Valid Email': valid_email,
-                            'Appointment': {
-                                'Type': row[i_type],
-                                'Location': row[i_location],
-                                'StartTime': row[i_start],
-                                'EndTime': row[i_end],
-                                'Duration': duration
-                            }
+                    'Patient': {
+                        'FirstName': row[i_fname],
+                        'MiddleName': row[i_mname],
+                        'LastName': row[i_lname],
+                        'Email': row[i_email],
+                        'Valid Email': valid_email,
+                        'Appointment': {
+                            'Type': row[i_type],
+                            'Location': row[i_location],
+                            'StartTime': row[i_start],
+                            'EndTime': row[i_end],
+                            'Duration': duration
                         }
                     }
                 }
-                patient_appts.append(entry.copy())
-        return patient_appts
+                patient_appts.append(entry)
+
+        appts_to_insert = dedupe(patient_appts)
+        unique_appointments = len(appts_to_insert)
+        print('\n%i unique appointments found' %unique_appointments)
+
+        return appts_to_insert
+
+
+def dedupe(the_list):
+    unique_patients = []
+    for each_dict in the_list:
+        if each_dict['ApptID'] not in unique_patients:
+                unique_patients.append(each_dict['ApptID'])
+    return unique_patients
 
 
 def connectToSF():
@@ -91,8 +104,7 @@ def getDuration(start_time, end_time):
 def main():
     # connectToSF()
     appointments = run_CSV(open(input('Enter full CSV Path:\n'), newline='\n'))
-    print(len(appointments))
-    
+    print(json.dumps(appointments, indent=4))
 
 
 if __name__ == '__main__':
