@@ -1,7 +1,3 @@
-# split_ed_csv
+# Parse CSV to insert patients and appointments to Salesforce
 
-Input:  Enter full CSV path of ED discharge file
-        Formats fields friendly enough for Salesforce input
-
-Output: 1. patient_file.csv
-        2. appt_file.csv
+This program asks for the path to a CSV as provided by the daily ED discharge report and parses the contents for patients and their appointment attributes.
