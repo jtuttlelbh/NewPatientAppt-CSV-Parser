@@ -1,4 +1,4 @@
-class Patient:
+class Patient(object):
     def __init__(self, **kwargs):
         self.firstName = str(kwargs.pop('FirstName')).title()
         self.middleName = str(kwargs.pop('MiddleName')).title()

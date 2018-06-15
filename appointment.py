@@ -1,7 +1,9 @@
 from datetime import datetime, timedelta
 
-class Appointment:
+
+class Appointment(object):
     def __init__(self, **kwargs):
+        self.provider = kwargs.pop('Provider')
         self.type = kwargs.pop('Type')
         self.location = kwargs.pop('Location')
         self.start = kwargs.pop('StartTime')
