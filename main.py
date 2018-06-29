@@ -1,4 +1,8 @@
-# C:\\Users\\jtuttle\\Documents\\GIM_New_Patient_Appts\\CRG1040 - Appts_GIM_56_2038282587443456905.csv
+# TODO:
+# 1. Error handling and reporting
+# 2. More robust comments
+# 3. Too many kwargs.pop()s?
+
 
 from patient_handler import PatientHandler
 from simple_salesforce import Salesforce
@@ -8,9 +12,11 @@ import json
 
 def connectToSF():
     try:
-        sf = Salesforce(username=sandbox_username, domain='test',
-                        password=sandbox_password, security_token=sandbox_token,
-                        client_id='Jared~Python')
+        sf = Salesforce(username=sandbox_username,
+                        password=sandbox_password,
+                        security_token=sandbox_token,
+                        domain='test',
+                        client_id='PythonUploader')
         if sf:
             print('Connection to Salesforce successful\n')
             return sf
@@ -21,17 +27,16 @@ def connectToSF():
 def main():
     csv_path = input('Enter full CSV Path:\n')
     sf = connectToSF()
-    p = PatientHandler()
-    appointments = p.run_CSV(open(csv_path, newline='\n'))
-    appointments = p.dedupe(appointments)
-    print('{0} unique appointments found'.format(str(len(appointments))))
+    p = PatientHandler(sf)
+    results = p.run_CSV(open(csv_path, newline='\n'))
+    errors = collectErrors(results)
+    print(json.dumps(errors, indent=4))
 
-    print(json.dumps(appointments, indent=4))
 
-    """ Variable access example: 
-            print(appt['ApptID'])
-            print(appt['Patient']['firstName'])
-            print(appt['Patient']['appointment']['duration'])  """
+def collectErrors(results):
+    errors = []
+    print(json.dumps(results, indent=4))
+    return results
 
 
 if __name__ == '__main__':
