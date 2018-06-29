@@ -33,8 +33,8 @@ def main():
     print(json.dumps(errors, indent=4))
 
 
-def collectErrors(results):
-    errors = []
+def collectErrors(results):  # clearly does nothing other than 
+    errors = []              # print the data right now
     print(json.dumps(results, indent=4))
     return results
 
