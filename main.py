@@ -29,14 +29,13 @@ def main():
     sf = connectToSF()
     p = PatientHandler(sf)
     results = p.run_CSV(open(csv_path, newline='\n'))
-    errors = collectErrors(results)
-    print(json.dumps(errors, indent=4))
+    print(collectErrors(results))
 
 
-def collectErrors(results):  # clearly does nothing other than 
+def collectErrors(results):  # clearly does nothing other than
     errors = []              # print the data right now
     print(json.dumps(results, indent=4))
-    return results
+    return errors
 
 
 if __name__ == '__main__':

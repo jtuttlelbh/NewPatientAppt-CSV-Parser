@@ -4,18 +4,18 @@ from simple_salesforce import Salesforce
 
 class Patient(object):
     def __init__(self, **kwargs):
-        self.FirstName = str(kwargs.pop('FirstName')).title()
+        self.FirstName          = str(kwargs.pop('FirstName')).title()
         self.HC4__MiddleName__c = str(kwargs.pop('MiddleName')).title()
-        self.LastName = str(kwargs.pop('LastName')).title()
-        self.Email = str(kwargs.pop('Email')).lower()
-        self.validEmail = kwargs.pop('ValidEmail')
-        self.Appointment = kwargs.pop('Appointment')
-        self.LeadSource = kwargs.pop('LeadSource')
-        self.sf = kwargs.pop('sf_instance')
-        self.street = str(kwargs.pop('Street')).title()
-        self.city = str(kwargs.pop('City')).title()
-        self.state = str(kwargs.pop('State')).upper()
-        self.postalcode = kwargs.pop('PostalCode')
+        self.LastName           = str(kwargs.pop('LastName')).title()
+        self.Email              = str(kwargs.pop('Email')).lower()
+        self.street             = str(kwargs.pop('Street')).title()
+        self.city               = str(kwargs.pop('City')).title()
+        self.state              = str(kwargs.pop('State')).upper()
+        self.validEmail         = kwargs.pop('ValidEmail')
+        self.Appointment        = kwargs.pop('Appointment')
+        self.LeadSource         = kwargs.pop('LeadSource')
+        self.sf                 = kwargs.pop('sf_instance')
+        self.postalcode         = kwargs.pop('PostalCode')
 
     def insert(self):
         payload = self.__dict__

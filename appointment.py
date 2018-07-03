@@ -11,6 +11,7 @@ class Appointment(object):
         self.date = kwargs.pop('Date')
         self.start = kwargs.pop('Start')
         self.end = kwargs.pop('End')
+        self.Status = "Open"
         self.Appointment_Date__c = self.formatDate(self.date)
         self.sf = sf_instance
         self.recordTypeId = self.getRecordTypeID()
